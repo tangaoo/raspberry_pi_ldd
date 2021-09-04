@@ -31,4 +31,5 @@ linux/arch/arm/boot/dts/bcm2711-rpi-4-b.dts   // 板级设备树，定义板级�
 
 ## 附录
 * [历代树莓派主芯片型号](https://www.raspberrypi.org/documentation/computers/processors.html)
-* [设备树语法概要](Documents/000_device_tree_syntax.md)
+* [设备树语法概要](../Documents/000_device_tree_syntax.md)
+* [raspberry pi 4B 反编译后的设备树文件](../Reference/rpi_4b.dts)
