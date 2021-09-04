@@ -27,19 +27,19 @@ uboot 启动内核时，会同时把内核、设备树加载到内存，并且�
     #size-cells = <0x1>;
 
 	cpus{
-	}
+	};
 
 	memory{
-	}
+	};
 
 	chosen{
-	}
+	};
 
 	aliases{
-	}
+	};
 
 	peripherals{
-	}	
+	};	
 }
 ```
 设备树总体概览如上，一般会有上面这些节点，peripherals 指代各种外设。
