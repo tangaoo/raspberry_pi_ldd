@@ -16,12 +16,16 @@
      };
 ```
 
+### 1.2 编译设备树
+
 编译设备树，并拷贝到 boot 目录。 [rpi 内核编译文档参考](https://www.raspberrypi.org/documentation/computers/linux_kernel.html)
 
 ```console
 $ make dtbs
 $ sudo cp arch/arm/boot/dts/*.dtb /boot/
 ```
+
+### 1.3 LED 子系统的用户空间接口
 
 重启后，LED2 已经被点亮了，同时在 `/sys/class/leds` 目录下可以看到 led_gipo16 设备。
 
