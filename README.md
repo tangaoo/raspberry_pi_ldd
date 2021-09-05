@@ -1,5 +1,6 @@
 # raspberry_pi_ldd
 Writing device drives on Raspberry Pi 4B step by step.
+
 一步步写树莓派4B的设备驱动。
 
 ## Pins 原理图
@@ -32,5 +33,6 @@ Writing device drives on Raspberry Pi 4B step by step.
 
 ## Documents
 
-* [001 Lighting first led/ 点亮第一盏 LED 灯](Documents/001_Lighting_first_led.md)
+* [001 Lighting the first led using GPIO subsystem 用 GPIO 子系统点亮第一个 LED 灯](Documents/001_Lighting_first_led.md)
+* [002 Lighting another led using LED subsystem 用 LED 子系统点亮第另一个 LED 灯](Documents/002_Lighting_another_led.md)
 
