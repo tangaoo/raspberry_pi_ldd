@@ -7,7 +7,7 @@ $ sudo apt-get install -y i2c-tools
 
 ## 1. 操作步骤
 
-在 README.md扩展板连线图中可见 Raspberry Pi的 GPIO2 GPIO3（对应I2C-1）连接着 EEPROMG（24c16）芯片。
+在 README.md扩展板连线图中可见 Raspberry Pi的 GPIO2 GPIO3（对应I2C-1）连接着 EEPROMG [24c16](../Reference/AT24C16B.pdf)芯片。
 
 ### 1.1 设备树添加 I2C-1 总线，和 24c16 驱动
 
