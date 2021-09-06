@@ -35,7 +35,6 @@
 /* //////////////////////////////////////////////////////////////////////////////////////
  * globals
  */
-
 static int s_major = 0;
 static struct class *s_led_class = NULL;
 static struct gpio_desc *s_led_gpio = NULL;
@@ -57,13 +56,13 @@ static int rpi_led_release(struct inode *inode, struct file *file)
 {
     printk("Release led\n");
 
-    return  0
+    return  0;
 }
 static ssize_t rpi_led_read(struct file *file, char __user *buf, size_t count, loff_t *ppos)
 {
     printk("Read led, nothing to do\n");
 
-    return  0
+    return  0;
 }
 static ssize_t rpi_led_write(struct file *file, const char __user *buf, size_t count, loff_t *ppos)
 {
@@ -93,7 +92,7 @@ static int rpi_led_probe(struct platform_device *pdev)
     printk("Rpi led probe\n");
 
     // 从设备树中获取led硬件资源 "led12-gpios = <&gpio 12 GPIO_ACTIVE_LOW>;"
-    s_led_gpio = gpiod_get(&pdev->dev, "led12");
+    s_led_gpio = gpiod_get(&pdev->dev, "led12", 0);
     if(IS_ERR(s_led_gpio))
     {
         dev_err(&pdev->dev, "Failed to get led from device tree\n");
@@ -107,7 +106,7 @@ static int rpi_led_probe(struct platform_device *pdev)
     s_led_class = class_create(THIS_MODULE, "rpi_led_class");
     if (IS_ERR(s_led_class)) {
 		printk("Failed create rpi_led_class\n");
-		unregister_chrdev(major, "rpi_led");
+		unregister_chrdev(s_major, "rpi_led");
 		gpiod_put(s_led_gpio);
 		return PTR_ERR(s_led_class);
 	}
@@ -125,13 +124,13 @@ static int rpi_led_remove(struct platform_device *pdev)
 	unregister_chrdev(s_major, "rpi_led");
 	gpiod_put(s_led_gpio);
     
-    return 0
+    return 0;
 }
 
 static const struct of_device_id rpi_led_table[] = {
     { .compatible = "rpi_4, led_gpio12" },
     { },
-}
+};
 
 static struct platform_driver rpi_led_driver = {
 	.probe		= rpi_led_probe,
