@@ -35,8 +35,8 @@ Writing device drives on Raspberry Pi 4B step by step.
 
 ## Documents
 
-* [001  GPIO 子系统点亮第一盏 LED 灯](Documents/001_Lighting_first_led.md)
-* [002  LED 子系统点亮第二盏 LED 灯](Documents/002_Lighting_another_led.md)
-* [003  Platform 驱动点亮第三盏 LED 灯](Documents/003_Lighting_third_led.md)
-* [004  I2C 总线访问 eeprom](Documents/004_i2c_bus.md)
+* [001  GPIO 子系统点亮第一盏 LED 灯。](Documents/001_Lighting_first_led.md)
+* [002  LED 子系统点亮第二盏 LED 灯。](Documents/002_Lighting_another_led.md)
+* [003  Platform 驱动点亮第三盏 LED 灯。](Documents/003_Lighting_third_led.md)
+* [004  I2C 总线访问 eeprom 设备。](Documents/004_i2c_bus.md)
 
