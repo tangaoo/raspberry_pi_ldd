@@ -9,6 +9,8 @@ Writing device drives on Raspberry Pi 4B step by step.
 
 ## 扩展板连线表
 
+下表是自定制的扩展板与 Raspberry Pi 连线图。后面的文档、程序均引用此连线图定义。
+
 | 功能 | 扩展板IO | Raspberry Pi IO |
 | :-----| :----: | :----: |
 | RS485  | RXD   | GPIO15(RXD) |
@@ -33,7 +35,8 @@ Writing device drives on Raspberry Pi 4B step by step.
 
 ## Documents
 
-* [001 Lighting the first led using GPIO subsystem 用 GPIO 子系统点亮第一个 LED 灯](Documents/001_Lighting_first_led.md)
-* [002 Lighting the second led using LED subsystem 用 LED 子系统点亮第二个 LED 灯](Documents/002_Lighting_another_led.md)
-* [003 Lighting the third led using coustom driver 用自己的驱动点亮第三个 LED 灯](Documents/003_Lighting_third_led.md)
+* [001  GPIO 子系统点亮第一盏 LED 灯](Documents/001_Lighting_first_led.md)
+* [002  LED 子系统点亮第二盏 LED 灯](Documents/002_Lighting_another_led.md)
+* [003  Platform 驱动点亮第三盏 LED 灯](Documents/003_Lighting_third_led.md)
+* [004  I2C 总线访问 eeprom](Documents/004_i2c_bus.md)
 

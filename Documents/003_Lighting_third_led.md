@@ -2,53 +2,60 @@
 
 ## 1. 操作步骤
 
-在 README.md扩展板连线图中可见 Raspberry Pi的 GPIO16 连接着 LED2。
+在 README.md扩展板连线图中可见 Raspberry Pi的 GPIO12 连接着 LED3。
 
-### 1.1 修改设备树
+### 1.1 设备树添加 LED 节点
 
-在 `arch/arm/boot/dts/bcm2711-rpi-4-b.dts` 文件 147 行后添加 led_gpio16 节点：
+在 `arch/arm/boot/dts/bcm2711-rpi-4-b.dts` 文件跟节点 / 上添加 led_gpio12 节点：
 
 ```cpp
-     led_gpio16: led_gpio16 {
-         label = "led_gipo16";
-         linux,default-trigger = "default-on";
-         gpios = <&gpio 16 GPIO_ACTIVE_LOW>;
+/ {
+     led_gpio12 {
+         compatible = "rpi_4, led_gpio12";
+         label = "rpi_led";
+         led12-gpios = <&gpio 12 GPIO_ACTIVE_LOW>;
      };
+};
 ```
+编译 dtbs，拷贝到 rpi，并重启。
 
-### 1.2 编译设备树
-
-编译设备树，并拷贝到 boot 目录。 [rpi 内核编译文档参考](https://www.raspberrypi.org/documentation/computers/linux_kernel.html)
+进入`/sys/bus/platform/devices/`目录，已经可以看到 platform 设备 led_gpio12。此时进入 led_gpio12 目录发现并没有匹配的 driver:
 
 ```console
-$ make dtbs
-$ sudo cp arch/arm/boot/dts/*.dtb /boot/
+pi@raspberrypi:/sys/bus/platform/devices/led_gpio12 $ ls
+driver_override  modalias  of_node  power  subsystem  uevent
 ```
 
-### 1.3 LED 子系统的用户空间接口
+### 1.2 编写 LED 驱动程序
 
-重启后，LED2 已经被点亮了，同时在 `/sys/class/leds` 目录下可以看到 led_gipo16 设备。
+[rpi_led3.c](../Source/4_rpi_led/rpi_led3.c) 是与 led_gpio12 匹配的驱动程序。编译并动态加载驱动：
 
 ```console
-pi@raspberrypi:/sys/class/leds/led_gipo16 $ ls
-brightness  device  max_brightness  power  subsystem  trigger  uevent
+pi@raspberrypi:~/raspberry_pi_ldd/Source/4_rpi_led $ make
+pi@raspberrypi:~/raspberry_pi_ldd/Source/4_rpi_led $ sudo insmod rpi_led3.ko
 ```
 
-trigger 设置点亮 LED 的触发器，如下设置 heartbeat 后 LED 会心跳闪烁。
+此时会生成`/dev/rpi_led0`节点。再查看 led_gpio12 设备，发现已经有与之匹配的驱动：
 
 ```console
-$ echo heartbeat > trigger
+pi@raspberrypi:/sys/bus/platform/devices/led_gpio12 $ ls
+driver  driver_override  modalias  of_node  power  subsystem  uevent
 ```
 
-## 2. 为什么
-### 2.1 LED 子系统
+### 1.3 LED 应用程序
+[rpi_led3_test.c](../Source/4_rpi_led/rpi_led3_test.c) 是 led 应用程序，通过设备节点 `/dev/rpi_led0` 与驱动程序交互。
 
-对于 LED 模块，内核实现了通用 LED 驱动，抽象出来了 LED 子系统。LED 子系统利用 sysfs 文件系统与用户空间进行交互，也就是上面的操作步骤，请查看这边内核[文档](https://github.com/torvalds/linux/blob/master/Documentation/leds/leds-class.rst)。
+```console
+pi@raspberrypi:~/raspberry_pi_ldd/Source/4_rpi_led $ gcc rpi_led3_test.c -o rpi_led3_test
+pi@raspberrypi:~/raspberry_pi_ldd/Source/4_rpi_led $ sudo ./rpi_led3_test /dev/rpi_led0 on
+```
 
-### 2.2 LED 设备树节点与 LED 驱动程序的关联
+执行上面操作后，LED 被点亮。
 
-我们在设备树中添加的 led_gpio16 节点是 leds 节点的子节点。leds 节点是挂在 / 根节点上的，同时在[该文件](https://github.com/torvalds/linux/blob/master/arch/arm/boot/dts/bcm2835-rpi.dtsi#L4)中可以看到 leds 的 `compatible = "gpio-leds" `。
 
-设备树中指定的硬件资源就是通过 `compatible = "gpio-leds" ` 匹配上特定[驱动程序](https://github.com/torvalds/linux/blob/master/drivers/leds/leds-gpio.c#L188)。
+## 2. Platform 驱动框架 
 
-下一篇会从源码分析 GPIO LED 子系统。
+[platform 参考](https://github.com/torvalds/linux/blob/master/Documentation/driver-api/driver-model/platform.rst)
+
+platform 是一个虚拟总线，platform 作用是仿照真实总线把那些非总线设备和非总线驱动关联起来。
+
