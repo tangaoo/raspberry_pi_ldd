@@ -13,7 +13,7 @@ Writing device drives on Raspberry Pi 4B step by step.
 
 | 功能 | 扩展板IO | Raspberry Pi IO |
 | :-----| :----: | :----: |
-| RS485  | RXD   | GPIO15(RXD) |
+| UART   | RXD   | GPIO15(RXD) |
 | -      | TXD   | GPIO14(TXD) |
 | -      | EN    | GPIO4 |
 | SEGLED | SCLK  | GPIO20 |
@@ -32,6 +32,17 @@ Writing device drives on Raspberry Pi 4B step by step.
 | EEPROM | CLK   | GPIO3(CLK) |
 | -      | DAT   | GPIO2(DAT) |
 | BUZZER | BUZZ  | GPIO13 |
+
+## 开启调试串口
+* 使能 UART 登陆
+```console
+sudo raspi-config
+```
+* 更改 `cmdline.txt`
+修改第一个console：console=ttyS0,115200；移除第二个console：console=tty1；移除quiet字段。
+```
+console=ttyS0,115200 root=PARTUUID=fbf6707b-02 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait splash plymouth.ignore-serial-consoles ip=192.168.3.250
+```
 
 ## Documents
 
